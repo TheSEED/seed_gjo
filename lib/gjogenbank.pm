@@ -363,6 +363,7 @@ my %genbank_streams;   # used by parse_next_genbank() to track open streams
 #===============================================================================
 #  Read GenBank entries from one or more files and/or strings.
 #
+#    First parameter is optional params hash.
 #    @entries = parse_genbank( )                 #  \*STDIN
 #   \@entries = parse_genbank( )                 #  \*STDIN
 #    @entries = parse_genbank( \*FH, ... )       #  open file
@@ -376,6 +377,11 @@ my %genbank_streams;   # used by parse_next_genbank() to track open streams
 
 sub parse_genbank
 {
+    my $params;
+    if (ref($_[0]) eq 'HASH')
+    {
+	$params = shift @_;
+    }
     my @entries;
     my $first = 1;
     while ( @_ || $first )
@@ -384,7 +390,7 @@ sub parse_genbank
         my ( $fh, $close ) = &input_filehandle( $file );
         if ( $fh )
         {
-            while ( my $entry = parse_one_genbank_entry( $fh ) ) { push @entries, $entry }
+            while ( my $entry = parse_one_genbank_entry( $fh, $params ) ) { push @entries, $entry }
             close $fh if $close;
         }
         $first = 0;
@@ -462,6 +468,7 @@ sub close_next_genbank
 sub parse_one_genbank_entry
 {
     my $fh = shift;
+    my $params = shift // {};
     local $_;
 
     my $state = 0;
@@ -825,11 +832,15 @@ sub parse_one_genbank_entry
         if ( defined( $_ = <$fh> ) ) { chomp } else { $state = -1 }
         while ( $state >= 0 && s/^ *\d+ +// )
         {
-            s/[^A-Za-z]+//g;
-            push @sequence, $_;
+	    if (!$params->{skip_contigs})
+	    {
+                s/[^A-Za-z]+//g;
+                push @sequence, $_;
+	    }
             if ( defined( $_ = <$fh> ) ) { chomp } else { $state = -1 }
         }
-        $entry{ SEQUENCE } = join '', @sequence;
+
+        $entry{ SEQUENCE } = join '', @sequence if !$params->{skip_contigs};
 
         $state = ( $_ eq '//' ) ? 0 : -1 if $state >= 0;
     }
