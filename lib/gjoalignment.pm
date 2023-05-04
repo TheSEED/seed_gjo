@@ -18,6 +18,8 @@
 
 package gjoalignment;
 
+no warnings qw(deprecated);
+
 #===============================================================================
 #  A package of functions for alignments (to be expanded)
 #
