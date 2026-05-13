@@ -548,7 +548,7 @@ sub create_feature
 
     $ftr->{ alias_pairs }         = $pairs                         if $pairs   && @$pairs;
 
-    $ftr->{ analysis_event_id }   = $event                         if $event;
+    $ftr->{ feature_creation_event }   = $event                         if $event;
 
     $ftr->{ protein_translation } = $gb_qual->{ translation }->[0] if $gb_qual->{ translation };
 
