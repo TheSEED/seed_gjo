@@ -287,7 +287,7 @@ sub xml_item
 
 sub genbank
 {
-    my $url = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi';
+    my $url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi';
     my $db  = 'nucleotide';
 
     my @ids = grep { $_ }
@@ -340,7 +340,7 @@ sub acc2gi
 {
     my ( $acc, $db ) = @_;
 
-    my $service = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi';
+    my $service = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi';
 
     my @acc = map { s/^\s+//; s/\s.*$//; /^\w+(?:\.\d+)?$/ ? $_ : () }
               map { split /,/ }

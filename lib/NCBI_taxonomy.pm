@@ -85,7 +85,7 @@ package NCBI_taxonomy;
 #
 #-------------------------------------------------------------------------------
 #
-#  http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi';
+#  https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi';
 #  https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=taxonomy&id=1203605&report=xml
 #
 use strict;
